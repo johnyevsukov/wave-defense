@@ -20,8 +20,12 @@ export class Grunt extends Enemy {
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(0, this.game.height - this.height);
     this.speed = generateRandomDecimalNumber(1, 1.5);
+    this.markedForDeletion = false;
   }
   upadate(deltaTimeMultiplier) {
+    if (this.x <= -this.width) {
+      this.markedForDeletion = true;
+    }
     const normalizedSpeed = this.speed * deltaTimeMultiplier;
     this.x -= normalizedSpeed;
   }

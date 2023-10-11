@@ -33,6 +33,7 @@ window.addEventListener("load", function () {
       this.enemies.forEach((enemy) => {
         enemy.upadate(deltaTimeMultiplier);
       });
+      this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
     }
     draw(ctx) {
       this.player.draw(ctx);
