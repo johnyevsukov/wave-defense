@@ -20,7 +20,14 @@ window.addEventListener("load", function () {
       this.height = height;
       this.input = new InputHandler(this);
       this.player = new Player(this);
-      this.enemies = [new Grunt(this)];
+      this.enemies = [
+        new Grunt(this),
+        new Grunt(this),
+        new Grunt(this),
+        new Grunt(this),
+        new Grunt(this),
+      ];
+      this.explosions = [];
       this.cursorX = 0;
       this.cursorY = 0;
       window.addEventListener("mousemove", (e) => {
@@ -29,16 +36,27 @@ window.addEventListener("load", function () {
       });
     }
     update(deltaTimeMultiplier) {
+      console.log(this.explosions);
+      console.log(this.explosions);
       this.player.update(this.input.keys, deltaTimeMultiplier);
       this.enemies.forEach((enemy) => {
-        enemy.upadate(deltaTimeMultiplier);
+        enemy.update(deltaTimeMultiplier);
+      });
+      this.explosions.forEach((explosion) => {
+        explosion.update(deltaTimeMultiplier);
       });
       this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
+      this.explosions = this.explosions.filter(
+        (explosion) => !explosion.markedForDeletion
+      );
     }
     draw(ctx) {
       this.player.draw(ctx);
       this.enemies.forEach((enemy) => {
         enemy.draw(ctx);
+      });
+      this.explosions.forEach((explosion) => {
+        explosion.draw(ctx);
       });
     }
   }
