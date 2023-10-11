@@ -5,7 +5,7 @@
 import { checkRectangularCollision } from "./utils.js";
 
 class Shot {
-  constructor(game, player, dx, dy) {
+  constructor(game, turret, dx, dy) {
     this.game = game;
     this.width = 4;
     this.height = 4;
@@ -15,12 +15,12 @@ class Shot {
       left: 0,
       right: this.game.width - this.width,
     };
-    this.x = player.x + player.width / 2 - this.width / 2;
-    this.y = player.y + player.height / 2 - this.height / 2;
+    this.x = turret.x + turret.width / 2 - this.width / 2;
+    this.y = turret.y + turret.height / 2 - this.height / 2;
     this.dx = dx;
     this.dy = dy;
     this.damage = 20;
-    this.speed = 10;
+    this.speed = 20;
     this.markedForDeletion = false;
   }
   checkMapBoundaries() {
@@ -66,69 +66,49 @@ class Shot {
   }
 }
 
-export class Player {
-  constructor(game) {
+export class Turret {
+  constructor(game, x, y) {
     this.game = game;
-    this.width = 20;
-    this.height = 20;
-    this.boundaries = {
-      top: 0,
-      bottom: this.game.height - this.height,
-      left: 0,
-      right: this.game.width - this.width,
-    };
-    this.x = 20;
-    this.y = this.boundaries.bottom - 20;
-    this.speed = 3;
+    this.width = 40;
+    this.height = 40;
+    this.x = x;
+    this.y = y;
     this.rotation = 0;
     this.shots = [];
-    this.image = document.getElementById("playerSprite");
-    window.addEventListener("click", (e) => {
-      const mouseClickX =
-        e.pageX - (window.innerWidth / 2 - this.game.width / 2);
-      const mouseClickY =
-        e.pageY - (window.innerHeight / 2 - this.game.height / 2);
-
-      const x = mouseClickX - (this.x + this.width / 2);
-      const y = mouseClickY - (this.y + this.height / 2);
-      const l = Math.sqrt(x * x + y * y);
-
-      const dx = x / l;
-      const dy = y / l;
-      this.shots.push(new Shot(this.game, this, dx, dy));
+    this.image = document.getElementById("turretSprite");
+  }
+  findClosestEnemy() {
+    const enemyXCors = this.game.enemies.map((enemy) => {
+      return enemy.x;
     });
+    const closestXCor = Math.min(...enemyXCors);
+    const closestEnemy = this.game.enemies.filter(
+      (enemy) => enemy.x === closestXCor
+    )[0];
+    return closestEnemy;
   }
-  checkMapBoundaries() {
-    if (this.x < this.boundaries.left) {
-      this.x = this.boundaries.left;
-    } else if (this.x > this.boundaries.right) {
-      this.x = this.boundaries.right;
-    }
-    if (this.y < this.boundaries.top) {
-      this.y = this.boundaries.top;
-    } else if (this.y > this.boundaries.bottom) {
-      this.y = this.boundaries.bottom;
-    }
+  shoot(enemy) {
+    const x = enemy.x + enemy.width / 2 - (this.x + this.width / 2);
+    const y = enemy.y + enemy.height / 2 - (this.y + this.height / 2);
+    const l = Math.sqrt(x * x + y * y);
+
+    const dx = x / l;
+    const dy = y / l;
+    this.shots.push(new Shot(this.game, this, dx, dy));
   }
-  update(inputKeys, deltaTimeMultiplier) {
-    const normalizedSpeed = this.speed * deltaTimeMultiplier;
+  update(deltaTimeMultiplier) {
+    const closestEnemy = this.findClosestEnemy();
+    const tragetPoint = closestEnemy || {
+      x: this.x + this.width,
+      y: this.y,
+    };
     this.rotation = Math.atan2(
-      this.game.cursorX - this.x,
-      -(this.game.cursorY - this.y)
+      tragetPoint.x - this.x,
+      -(tragetPoint.y - this.y)
     );
-    if (inputKeys.includes("w")) {
-      this.y -= normalizedSpeed;
+    if (closestEnemy) {
+      this.shoot(closestEnemy);
     }
-    if (inputKeys.includes("s")) {
-      this.y += normalizedSpeed;
-    }
-    if (inputKeys.includes("a")) {
-      this.x -= normalizedSpeed;
-    }
-    if (inputKeys.includes("d")) {
-      this.x += normalizedSpeed;
-    }
-    this.checkMapBoundaries();
     this.shots.forEach((shot) => {
       shot.update(deltaTimeMultiplier);
     });

@@ -14,6 +14,7 @@
   max-height: 100%;
 }
 
-#playerSprite {
+#playerSprite,
+#turretSprite {
   display: none;
 }

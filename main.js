@@ -5,6 +5,7 @@
 import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
 import { Grunt } from "./enemy.js";
+import { Turret } from "./turret.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
@@ -25,8 +26,8 @@ window.addEventListener("load", function () {
         new Grunt(this),
         new Grunt(this),
         new Grunt(this),
-        new Grunt(this),
       ];
+      this.turrets = [new Turret(this, 50, 200)];
       this.explosions = [];
       this.cursorX = 0;
       this.cursorY = 0;
@@ -36,11 +37,12 @@ window.addEventListener("load", function () {
       });
     }
     update(deltaTimeMultiplier) {
-      console.log(this.explosions);
-      console.log(this.explosions);
       this.player.update(this.input.keys, deltaTimeMultiplier);
       this.enemies.forEach((enemy) => {
         enemy.update(deltaTimeMultiplier);
+      });
+      this.turrets.forEach((turret) => {
+        turret.update(deltaTimeMultiplier);
       });
       this.explosions.forEach((explosion) => {
         explosion.update(deltaTimeMultiplier);
@@ -57,6 +59,9 @@ window.addEventListener("load", function () {
       });
       this.explosions.forEach((explosion) => {
         explosion.draw(ctx);
+      });
+      this.turrets.forEach((turret) => {
+        turret.draw(ctx);
       });
     }
   }
