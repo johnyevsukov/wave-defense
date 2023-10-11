@@ -26,6 +26,9 @@ export class Grunt extends Enemy {
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
     }
+    if (this.health <= 0) {
+      this.markedForDeletion = true;
+    }
     const normalizedSpeed = this.speed * deltaTimeMultiplier;
     this.x -= normalizedSpeed;
   }

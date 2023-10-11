@@ -2,6 +2,70 @@
  * @type { HTMLCanvasElement }
  */
 
+import { checkRectangularCollision } from "./utils.js";
+
+class Shot {
+  constructor(game, player, dx, dy) {
+    this.game = game;
+    this.width = 4;
+    this.height = 4;
+    this.boundaries = {
+      top: 0,
+      bottom: this.game.height - this.height,
+      left: 0,
+      right: this.game.width - this.width,
+    };
+    this.x = player.x + player.width / 2 - this.width / 2;
+    this.y = player.y + player.height / 2 - this.height / 2;
+    this.dx = dx;
+    this.dy = dy;
+    this.damage = 20;
+    this.speed = 10;
+    this.markedForDeletion = false;
+  }
+  checkMapBoundaries() {
+    if (
+      this.x < this.boundaries.left ||
+      this.x > this.boundaries.right ||
+      this.y < this.boundaries.top ||
+      this.y > this.boundaries.bottom
+    ) {
+      this.markedForDeletion = true;
+    }
+  }
+  checkEnemyCollision() {
+    this.game.enemies.forEach((enemy) => {
+      if (
+        checkRectangularCollision(
+          this.x,
+          this.y,
+          this.width,
+          this.height,
+          enemy.x,
+          enemy.y,
+          enemy.width,
+          enemy.height
+        )
+      ) {
+        this.markedForDeletion = true;
+        enemy.health -= this.damage;
+      }
+    });
+  }
+  update(deltaTimeMultiplier) {
+    const normalizedSpeedX = this.dx * this.speed * deltaTimeMultiplier;
+    const normalizedSpeedY = this.dy * this.speed * deltaTimeMultiplier;
+    this.x += normalizedSpeedX;
+    this.y += normalizedSpeedY;
+    this.checkEnemyCollision();
+    this.checkMapBoundaries();
+  }
+  draw(context) {
+    context.fillStyle = "black";
+    context.fillRect(this.x, this.y, this.width, this.height);
+  }
+}
+
 export class Player {
   constructor(game) {
     this.game = game;
@@ -17,7 +81,22 @@ export class Player {
     this.y = this.boundaries.bottom - 20;
     this.speed = 3;
     this.rotation = 0;
+    this.shots = [];
     this.image = document.getElementById("playerSprite");
+    window.addEventListener("click", (e) => {
+      const mouseClickX =
+        e.pageX - (window.innerWidth / 2 - this.game.width / 2);
+      const mouseClickY =
+        e.pageY - (window.innerHeight / 2 - this.game.height / 2);
+
+      const x = mouseClickX - this.x;
+      const y = mouseClickY - this.y;
+      const l = Math.sqrt(x * x + y * y);
+
+      const dx = x / l;
+      const dy = y / l;
+      this.shots.push(new Shot(this.game, this, dx, dy));
+    });
   }
   checkMapBoundaries() {
     if (this.x < this.boundaries.left) {
@@ -50,6 +129,10 @@ export class Player {
       this.x += normalizedSpeed;
     }
     this.checkMapBoundaries();
+    this.shots.forEach((shot) => {
+      shot.update(deltaTimeMultiplier);
+    });
+    this.shots = this.shots.filter((shot) => !shot.markedForDeletion);
   }
   draw(context) {
     context.save();
@@ -63,5 +146,8 @@ export class Player {
       this.height
     );
     context.restore();
+    this.shots.forEach((shot) => {
+      shot.draw(context);
+    });
   }
 }
