@@ -4,6 +4,7 @@
 
 import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
+import { Grunt } from "./enemy.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
@@ -19,6 +20,7 @@ window.addEventListener("load", function () {
       this.height = height;
       this.input = new InputHandler(this);
       this.player = new Player(this);
+      this.enemies = [new Grunt(this)];
       this.cursorX = 0;
       this.cursorY = 0;
       window.addEventListener("mousemove", (e) => {
@@ -28,9 +30,15 @@ window.addEventListener("load", function () {
     }
     update(deltaTimeMultiplier) {
       this.player.update(this.input.keys, deltaTimeMultiplier);
+      this.enemies.forEach((enemy) => {
+        enemy.upadate(deltaTimeMultiplier);
+      });
     }
     draw(ctx) {
       this.player.draw(ctx);
+      this.enemies.forEach((enemy) => {
+        enemy.draw(ctx);
+      });
     }
   }
 

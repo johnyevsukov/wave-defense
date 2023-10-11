@@ -24,7 +24,8 @@ export class Player {
       this.x = this.boundaries.left;
     } else if (this.x > this.boundaries.right) {
       this.x = this.boundaries.right;
-    } else if (this.y < this.boundaries.top) {
+    }
+    if (this.y < this.boundaries.top) {
       this.y = this.boundaries.top;
     } else if (this.y > this.boundaries.bottom) {
       this.y = this.boundaries.bottom;
@@ -50,17 +51,17 @@ export class Player {
     }
     this.checkMapBoundaries();
   }
-  draw(ctx) {
-    ctx.save();
-    ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
-    ctx.rotate(this.rotation);
-    ctx.drawImage(
+  draw(context) {
+    context.save();
+    context.translate(this.x + this.width / 2, this.y + this.height / 2);
+    context.rotate(this.rotation);
+    context.drawImage(
       this.image,
       -this.width / 2,
       -this.height / 2,
       this.width,
       this.height
     );
-    ctx.restore();
+    context.restore();
   }
 }
