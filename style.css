@@ -15,6 +15,12 @@
 }
 
 #playerSprite,
-#turretSprite {
+#turretSprite,
+#fireTurretSprite,
+#slimeTurretSprite,
+#teleportTurretSprite,
+#topBar,
+#coin,
+#heart {
   display: none;
 }

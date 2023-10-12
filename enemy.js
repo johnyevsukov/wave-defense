@@ -24,7 +24,10 @@ export class Grunt extends Enemy {
     this.maxHealth = 100;
     this.health = this.maxHealth;
     this.x = this.game.width - this.width;
-    this.y = generateRandomWholeNumber(0, this.game.height - this.height);
+    this.y = generateRandomWholeNumber(
+      this.game.topBar.height,
+      this.game.height - this.height
+    );
     this.speed = generateRandomDecimalNumber(0.8, 1.2);
     this.markedForDeletion = false;
   }
@@ -69,7 +72,10 @@ export class Runner extends Enemy {
     this.maxHealth = 40;
     this.health = this.maxHealth;
     this.x = this.game.width - this.width;
-    this.y = generateRandomWholeNumber(0, this.game.height - this.height);
+    this.y = generateRandomWholeNumber(
+      this.game.topBar.height,
+      this.game.height - this.height
+    );
     this.speed = generateRandomDecimalNumber(1.5, 3);
     this.markedForDeletion = false;
   }
@@ -114,7 +120,10 @@ export class Tank extends Enemy {
     this.maxHealth = 500;
     this.health = this.maxHealth;
     this.x = this.game.width - this.width;
-    this.y = generateRandomWholeNumber(0, this.game.height - this.height);
+    this.y = generateRandomWholeNumber(
+      this.game.topBar.height,
+      this.game.height - this.height
+    );
     this.speed = generateRandomDecimalNumber(0.5, 1);
     this.markedForDeletion = false;
   }

@@ -10,7 +10,7 @@ class Shot {
     this.width = 4;
     this.height = 4;
     this.boundaries = {
-      top: 0,
+      top: this.game.topBar.height,
       bottom: this.game.height - this.height,
       left: 0,
       right: this.game.width - this.width,

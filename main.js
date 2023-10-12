@@ -6,12 +6,13 @@ import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
 import { Grunt, Runner, Tank } from "./enemy.js";
 import { Turret } from "./turret.js";
+import { TopBar } from "./topBar.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
   const ctx = canvas.getContext("2d");
   canvas.width = 900;
-  canvas.height = 500;
+  canvas.height = 550;
 
   class Game {
     constructor(width, height) {
@@ -19,6 +20,10 @@ window.addEventListener("load", function () {
       this.frameInterval = 1000 / this.fps;
       this.width = width;
       this.height = height;
+      this.coins = 0;
+      this.maxLives = 20;
+      this.lives = this.maxLives;
+      this.topBar = new TopBar(this);
       this.input = new InputHandler(this);
       this.player = new Player(this);
       this.enemies = [
@@ -56,6 +61,7 @@ window.addEventListener("load", function () {
       );
     }
     draw(ctx) {
+      this.topBar.draw(ctx);
       this.player.draw(ctx);
       this.enemies.forEach((enemy) => {
         enemy.draw(ctx);
