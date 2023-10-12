@@ -75,6 +75,9 @@ export class Turret {
     this.y = y;
     this.rotation = 0;
     this.shots = [];
+    this.fireTime = 1;
+    this.fireTimeIncrement = 0.1;
+    this.fireTimer = 0;
     this.image = document.getElementById("turretSprite");
   }
   findClosestEnemy() {
@@ -106,8 +109,11 @@ export class Turret {
       tragetPoint.x - this.x,
       -(tragetPoint.y - this.y)
     );
-    if (closestEnemy) {
+    if (this.fireTimer < this.fireTime) {
+      this.fireTimer += this.fireTimeIncrement * deltaTimeMultiplier;
+    } else if (this.fireTimer >= this.fireTime && closestEnemy) {
       this.shoot(closestEnemy);
+      this.fireTimer = 0;
     }
     this.shots.forEach((shot) => {
       shot.update(deltaTimeMultiplier);
