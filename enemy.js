@@ -23,6 +23,8 @@ export class Grunt extends Enemy {
     this.healthBarHeight = 3;
     this.maxHealth = 100;
     this.health = this.maxHealth;
+    this.damage = 2;
+    this.value = 1;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
@@ -34,10 +36,12 @@ export class Grunt extends Enemy {
   update(deltaTimeMultiplier) {
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
+      this.game.lives -= this.damage;
     }
     if (this.health <= 0) {
       this.game.explosions.push(new Explosion(this.x, this.y, this.color));
       this.markedForDeletion = true;
+      this.game.coins += this.value;
     }
     const normalizedSpeed = this.speed * deltaTimeMultiplier;
     this.x -= normalizedSpeed;
@@ -71,6 +75,8 @@ export class Runner extends Enemy {
     this.healthBarHeight = 3;
     this.maxHealth = 40;
     this.health = this.maxHealth;
+    this.damage = 1;
+    this.value = 2;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
@@ -82,10 +88,12 @@ export class Runner extends Enemy {
   update(deltaTimeMultiplier) {
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
+      this.game.lives -= this.damage;
     }
     if (this.health <= 0) {
       this.game.explosions.push(new Explosion(this.x, this.y, this.color));
       this.markedForDeletion = true;
+      this.game.coins += this.value;
     }
     const normalizedSpeed = this.speed * deltaTimeMultiplier;
     this.x -= normalizedSpeed;
@@ -119,6 +127,8 @@ export class Tank extends Enemy {
     this.healthBarHeight = 3;
     this.maxHealth = 500;
     this.health = this.maxHealth;
+    this.damage = 4;
+    this.value = 3;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
@@ -130,10 +140,12 @@ export class Tank extends Enemy {
   update(deltaTimeMultiplier) {
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
+      this.game.lives -= this.damage;
     }
     if (this.health <= 0) {
       this.game.explosions.push(new Explosion(this.x, this.y, this.color));
       this.markedForDeletion = true;
+      this.game.coins += this.value;
     }
     const normalizedSpeed = this.speed * deltaTimeMultiplier;
     this.x -= normalizedSpeed;

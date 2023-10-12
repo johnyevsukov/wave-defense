@@ -7,12 +7,14 @@ import { Player } from "./player.js";
 import { Grunt, Runner, Tank } from "./enemy.js";
 import { Turret } from "./turret.js";
 import { TopBar } from "./topBar.js";
+import { waves } from "./waves.js";
+import { Background } from "./background.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = 900;
-  canvas.height = 550;
+  canvas.width = 880;
+  canvas.height = 530;
 
   class Game {
     constructor(width, height) {
@@ -26,16 +28,9 @@ window.addEventListener("load", function () {
       this.topBar = new TopBar(this);
       this.input = new InputHandler(this);
       this.player = new Player(this);
-      this.enemies = [
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Runner(this),
-        new Runner(this),
-        new Tank(this),
-        new Tank(this),
-      ];
-      this.turrets = [new Turret(this, 50, 200)];
+      this.background = new Background(this);
+      this.enemies = [];
+      this.turrets = [];
       this.explosions = [];
       this.cursorX = 0;
       this.cursorY = 0;
@@ -62,6 +57,7 @@ window.addEventListener("load", function () {
     }
     draw(ctx) {
       this.topBar.draw(ctx);
+      this.background.draw(ctx);
       this.player.draw(ctx);
       this.enemies.forEach((enemy) => {
         enemy.draw(ctx);

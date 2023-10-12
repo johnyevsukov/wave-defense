@@ -76,7 +76,7 @@ export class Turret {
     this.rotation = 0;
     this.shots = [];
     this.fireTime = 1;
-    this.fireTimeIncrement = 0.1;
+    this.fireTimeIncrement = 0.02;
     this.fireTimer = 0;
     this.image = document.getElementById("turretSprite");
   }

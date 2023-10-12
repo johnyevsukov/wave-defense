@@ -1,3 +1,7 @@
+/**
+ * @type { HTMLCanvasElement }
+ */
+
 export class TopBar {
   constructor(game) {
     this.game = game;
@@ -8,10 +12,10 @@ export class TopBar {
   draw(context) {
     context.drawImage(this.image, 0, 0, this.width, this.height);
     context.fillStyle = "red";
-    context.font = "40px Arial";
-    context.fillText(this.game.lives, 70, 38);
+    context.font = "35px Arial";
+    context.fillText(this.game.lives, 70, 36);
     context.fillStyle = "gold";
-    context.font = "40px Arial";
-    context.fillText(this.game.coins, 189, 38);
+    context.font = "35px Arial";
+    context.fillText(this.game.coins, 189, 36);
   }
 }
