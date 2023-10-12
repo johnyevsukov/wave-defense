@@ -4,7 +4,7 @@
 
 import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
-import { Grunt, Runner } from "./enemy.js";
+import { Grunt, Runner, Tank } from "./enemy.js";
 import { Turret } from "./turret.js";
 
 window.addEventListener("load", function () {
@@ -27,6 +27,8 @@ window.addEventListener("load", function () {
         new Grunt(this),
         new Runner(this),
         new Runner(this),
+        new Tank(this),
+        new Tank(this),
       ];
       this.turrets = [new Turret(this, 50, 200)];
       this.explosions = [];
