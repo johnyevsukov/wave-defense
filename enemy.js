@@ -7,6 +7,7 @@ import {
   generateRandomDecimalNumber,
 } from "./utils.js";
 import { Explosion } from "./explosion.js";
+import { Fire } from "./fire.js";
 
 class Enemy {
   constructor(game) {
@@ -31,10 +32,19 @@ export class Grunt extends Enemy {
       this.game.height - this.height
     );
     this.speed = generateRandomDecimalNumber(0.8, 1.2);
-    this.isOnFire = false;
+    this.burnRate = 0;
+    this.fire = null;
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
+    if (this.burnRate) {
+      if (!this.fire) {
+        this.fire = new Fire(this.x, this.y);
+      } else {
+        this.fire.update(deltaTimeMultiplier, this.x, this.y);
+      }
+      this.health -= this.burnRate * deltaTimeMultiplier;
+    }
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
       this.game.lives -= this.damage;
@@ -48,6 +58,9 @@ export class Grunt extends Enemy {
     this.x -= normalizedSpeed;
   }
   draw(context) {
+    if (this.fire) {
+      this.fire.draw(context);
+    }
     context.fillStyle = "red";
     context.fillRect(
       this.x,

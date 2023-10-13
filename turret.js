@@ -181,7 +181,7 @@ class FireShot extends Shot {
     this.color = "orange";
   }
   hit(enemy) {
-    enemy.isOnFire = true;
+    enemy.burnRate += 0.1;
   }
 }
 

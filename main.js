@@ -9,6 +9,7 @@ import { Turret, SlimeTurret, TeleportTurret, FireTurret } from "./turret.js";
 import { TopBar } from "./topBar.js";
 import { Background } from "./background.js";
 import { turretPoints } from "./turretPoints.js";
+import { Fire } from "./fire.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
@@ -31,8 +32,8 @@ window.addEventListener("load", function () {
       this.background = new Background(this);
       this.enemies = [new Grunt(this), new Grunt(this)];
       this.turrets = [
-        new Turret(this, 100, 100),
-        new SlimeTurret(this, 100, 200),
+        // new Turret(this, 100, 100),
+        // new SlimeTurret(this, 100, 200),
         new TeleportTurret(this, 100, 300),
         new FireTurret(this, 100, 400),
       ];
