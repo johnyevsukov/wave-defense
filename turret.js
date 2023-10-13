@@ -7,8 +7,8 @@ import { checkRectangularCollision } from "./utils.js";
 class Shot {
   constructor(game, turret, dx, dy) {
     this.game = game;
-    this.width = 4;
-    this.height = 4;
+    this.width = 10;
+    this.height = 10;
     this.boundaries = {
       top: this.game.topBar.height,
       bottom: this.game.height - this.height,
@@ -21,7 +21,11 @@ class Shot {
     this.dy = dy;
     this.damage = 20;
     this.speed = 20;
+    this.color = "black";
     this.markedForDeletion = false;
+  }
+  hit(enemy) {
+    enemy.health -= this.damage;
   }
   checkMapBoundaries() {
     if (
@@ -48,7 +52,7 @@ class Shot {
         )
       ) {
         this.markedForDeletion = true;
-        enemy.health -= this.damage;
+        this.hit(enemy);
       }
     });
   }
@@ -61,7 +65,7 @@ class Shot {
     this.checkMapBoundaries();
   }
   draw(context) {
-    context.fillStyle = "black";
+    context.fillStyle = this.color;
     context.fillRect(this.x, this.y, this.width, this.height);
   }
 }
@@ -90,14 +94,19 @@ export class Turret {
     )[0];
     return closestEnemy;
   }
-  shoot(enemy) {
+  getShotTrajectory(enemy) {
     const x = enemy.x + enemy.width / 2 - (this.x + this.width / 2);
     const y = enemy.y + enemy.height / 2 - (this.y + this.height / 2);
     const l = Math.sqrt(x * x + y * y);
 
     const dx = x / l;
     const dy = y / l;
-    this.shots.push(new Shot(this.game, this, dx, dy));
+
+    return { dx, dy };
+  }
+  shoot(enemy) {
+    const trajectory = this.getShotTrajectory(enemy);
+    this.shots.push(new Shot(this.game, this, trajectory.dx, trajectory.dy));
   }
   update(deltaTimeMultiplier) {
     const closestEnemy = this.findClosestEnemy();
@@ -135,5 +144,79 @@ export class Turret {
     this.shots.forEach((shot) => {
       shot.draw(context);
     });
+  }
+}
+
+class SlimeShot extends Shot {
+  constructor(game, turret, dx, dy) {
+    super(game, turret, dx, dy);
+    this.color = "lightGreen";
+  }
+  hit(enemy) {
+    enemy.color = "lightGreen";
+    if (enemy.speed > 0.3) {
+      enemy.speed -= 0.1;
+    } else {
+      enemy.speed = 0.3;
+    }
+  }
+}
+
+export class SlimeTurret extends Turret {
+  constructor(game, x, y) {
+    super(game, x, y);
+    this.image = document.getElementById("slimeTurretSprite");
+  }
+  shoot(enemy) {
+    const trajectory = this.getShotTrajectory(enemy);
+    this.shots.push(
+      new SlimeShot(this.game, this, trajectory.dx, trajectory.dy)
+    );
+  }
+}
+
+class FireShot extends Shot {
+  constructor(game, turret, dx, dy) {
+    super(game, turret, dx, dy);
+    this.color = "orange";
+  }
+  hit(enemy) {
+    enemy.isOnFire = true;
+  }
+}
+
+export class FireTurret extends Turret {
+  constructor(game, x, y) {
+    super(game, x, y);
+    this.image = document.getElementById("fireTurretSprite");
+  }
+  shoot(enemy) {
+    const trajectory = this.getShotTrajectory(enemy);
+    this.shots.push(
+      new FireShot(this.game, this, trajectory.dx, trajectory.dy)
+    );
+  }
+}
+
+class TeleportShot extends Shot {
+  constructor(game, turret, dx, dy) {
+    super(game, turret, dx, dy);
+    this.color = "lightBlue";
+  }
+  hit(enemy) {
+    enemy.x += 50;
+  }
+}
+
+export class TeleportTurret extends Turret {
+  constructor(game, x, y) {
+    super(game, x, y);
+    this.image = document.getElementById("teleportTurretSprite");
+  }
+  shoot(enemy) {
+    const trajectory = this.getShotTrajectory(enemy);
+    this.shots.push(
+      new TeleportShot(this.game, this, trajectory.dx, trajectory.dy)
+    );
   }
 }

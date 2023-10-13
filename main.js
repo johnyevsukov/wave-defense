@@ -5,16 +5,16 @@
 import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
 import { Grunt, Runner, Tank } from "./enemy.js";
-import { Turret } from "./turret.js";
+import { Turret, SlimeTurret, TeleportTurret, FireTurret } from "./turret.js";
 import { TopBar } from "./topBar.js";
-import { waves } from "./waves.js";
 import { Background } from "./background.js";
+import { turretPoints } from "./turretPoints.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
   const ctx = canvas.getContext("2d");
   canvas.width = 880;
-  canvas.height = 530;
+  canvas.height = 510;
 
   class Game {
     constructor(width, height) {
@@ -22,15 +22,20 @@ window.addEventListener("load", function () {
       this.frameInterval = 1000 / this.fps;
       this.width = width;
       this.height = height;
-      this.coins = 0;
+      this.coins = 2000;
       this.maxLives = 20;
       this.lives = this.maxLives;
       this.topBar = new TopBar(this);
       this.input = new InputHandler(this);
       this.player = new Player(this);
       this.background = new Background(this);
-      this.enemies = [];
-      this.turrets = [];
+      this.enemies = [new Grunt(this), new Grunt(this)];
+      this.turrets = [
+        new Turret(this, 100, 100),
+        new SlimeTurret(this, 100, 200),
+        new TeleportTurret(this, 100, 300),
+        new FireTurret(this, 100, 400),
+      ];
       this.explosions = [];
       this.cursorX = 0;
       this.cursorY = 0;
@@ -56,8 +61,8 @@ window.addEventListener("load", function () {
       );
     }
     draw(ctx) {
-      this.topBar.draw(ctx);
-      this.background.draw(ctx);
+      // this.topBar.draw(ctx);
+      // this.background.draw(ctx);
       this.player.draw(ctx);
       this.enemies.forEach((enemy) => {
         enemy.draw(ctx);

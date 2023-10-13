@@ -31,6 +31,7 @@ export class Grunt extends Enemy {
       this.game.height - this.height
     );
     this.speed = generateRandomDecimalNumber(0.8, 1.2);
+    this.isOnFire = false;
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
