@@ -7,8 +7,8 @@ import { checkRectangularCollision } from "./utils.js";
 class Shot {
   constructor(game, turret, dx, dy) {
     this.game = game;
-    this.width = 10;
-    this.height = 10;
+    this.width = 8;
+    this.height = 8;
     this.boundaries = {
       top: this.game.topBar.height,
       bottom: this.game.height - this.height,
