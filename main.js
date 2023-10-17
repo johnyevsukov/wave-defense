@@ -8,7 +8,6 @@ import { Grunt, Runner, Tank } from "./enemy.js";
 import { Turret, SlimeTurret, TeleportTurret, FireTurret } from "./turret.js";
 import { TopBar } from "./topBar.js";
 import { Background } from "./background.js";
-import { Fire } from "./fire.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
@@ -22,7 +21,7 @@ window.addEventListener("load", function () {
       this.frameInterval = 1000 / this.fps;
       this.width = width;
       this.height = height;
-      this.coins = 0;
+      this.coins = 5000;
       this.maxLives = 20;
       this.lives = this.maxLives;
       this.topBar = new TopBar(this);

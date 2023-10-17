@@ -82,6 +82,8 @@ export class Turret {
     this.fireTime = 1;
     this.fireTimeIncrement = 0.02;
     this.fireTimer = 0;
+    this.sfx = new Audio();
+    this.sfx.src = "sfx/basic-turret-shot.wav";
     this.image = document.getElementById("turretSprite");
   }
   findClosestEnemy() {
@@ -105,6 +107,7 @@ export class Turret {
     return { dx, dy };
   }
   shoot(enemy) {
+    this.sfx.play();
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(new Shot(this.game, this, trajectory.dx, trajectory.dy));
   }
@@ -120,7 +123,11 @@ export class Turret {
     );
     if (this.fireTimer < this.fireTime) {
       this.fireTimer += this.fireTimeIncrement * deltaTimeMultiplier;
-    } else if (this.fireTimer >= this.fireTime && closestEnemy) {
+    } else if (
+      this.fireTimer >= this.fireTime &&
+      closestEnemy &&
+      closestEnemy.x <= this.game.width - closestEnemy.width / 2
+    ) {
       this.shoot(closestEnemy);
       this.fireTimer = 0;
     }
@@ -150,6 +157,7 @@ export class Turret {
 class SlimeShot extends Shot {
   constructor(game, turret, dx, dy) {
     super(game, turret, dx, dy);
+    this.speed = 25;
     this.color = "lightGreen";
   }
   hit(enemy) {
@@ -165,9 +173,11 @@ class SlimeShot extends Shot {
 export class SlimeTurret extends Turret {
   constructor(game, x, y) {
     super(game, x, y);
+    this.sfx.src = "sfx/slime-turret-shot.wav";
     this.image = document.getElementById("slimeTurretSprite");
   }
   shoot(enemy) {
+    this.sfx.play();
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new SlimeShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -178,19 +188,23 @@ export class SlimeTurret extends Turret {
 class FireShot extends Shot {
   constructor(game, turret, dx, dy) {
     super(game, turret, dx, dy);
+    this.damage = 5;
     this.color = "orange";
   }
   hit(enemy) {
-    enemy.burnRate += 0.1;
+    enemy.health == this.damage;
+    enemy.burnRate += 0.2;
   }
 }
 
 export class FireTurret extends Turret {
   constructor(game, x, y) {
     super(game, x, y);
+    this.sfx.src = "sfx/fire-turret-shot.wav";
     this.image = document.getElementById("fireTurretSprite");
   }
   shoot(enemy) {
+    this.sfx.play();
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new FireShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -201,19 +215,22 @@ export class FireTurret extends Turret {
 class TeleportShot extends Shot {
   constructor(game, turret, dx, dy) {
     super(game, turret, dx, dy);
+    this.speed = 10;
     this.color = "lightBlue";
   }
   hit(enemy) {
-    enemy.x += 50;
+    enemy.x += 250;
   }
 }
 
 export class TeleportTurret extends Turret {
   constructor(game, x, y) {
     super(game, x, y);
+    this.sfx.src = "sfx/teleport-turret-shot.wav";
     this.image = document.getElementById("teleportTurretSprite");
   }
   shoot(enemy) {
+    this.sfx.play();
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new TeleportShot(this.game, this, trajectory.dx, trajectory.dy)
