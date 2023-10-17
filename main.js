@@ -4,10 +4,10 @@
 
 import { InputHandler } from "./inputHandler.js";
 import { Player } from "./player.js";
-import { Grunt, Runner, Tank } from "./enemy.js";
 import { Turret, SlimeTurret, TeleportTurret, FireTurret } from "./turret.js";
 import { TopBar } from "./topBar.js";
 import { Background } from "./background.js";
+import { waves, addWaveEnemies } from "./waves.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("mainCanvas");
@@ -21,25 +21,16 @@ window.addEventListener("load", function () {
       this.frameInterval = 1000 / this.fps;
       this.width = width;
       this.height = height;
-      this.coins = 5000;
+      this.coins = 0;
       this.maxLives = 20;
       this.lives = this.maxLives;
+      this.currentWaveIndex = 0;
+      this.currentWave = waves[this.currentWaveIndex];
       this.topBar = new TopBar(this);
       this.input = new InputHandler(this);
       this.player = new Player(this);
       this.background = new Background(this);
-      this.enemies = [
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-        new Grunt(this),
-      ];
+      this.enemies = [];
       this.turrets = [];
       this.explosions = [];
       this.cursorX = 0;
@@ -48,8 +39,13 @@ window.addEventListener("load", function () {
         this.cursorX = e.clientX - (window.innerWidth / 2 - this.width / 2);
         this.cursorY = e.clientY - (window.innerHeight / 2 - this.height / 2);
       });
+      addWaveEnemies(this, waves[this.currentWaveIndex]);
     }
     update(deltaTimeMultiplier) {
+      if (!this.enemies.length) {
+        this.currentWaveIndex += 1;
+        addWaveEnemies(this, waves[this.currentWaveIndex]);
+      }
       this.topBar.update(this.input.keys);
       this.player.update(this.input.keys, deltaTimeMultiplier);
       this.enemies.forEach((enemy) => {

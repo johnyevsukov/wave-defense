@@ -7,13 +7,14 @@ import { turretPoints } from "./turretPoints.js";
 import { checkRectangularCollision } from "./utils.js";
 
 const turretMap = {
-  BASIC: 0,
-  SLIME: 1,
+  SLIME: 0,
+  BASIC: 1,
   FIRE: 2,
   TELEPORT: 3,
 };
 
 const translucentRed = "rgba(255, 0, 0, 0.3)";
+const translucentOrange = "rgba(255, 197, 0, 0.3)";
 const translucentGreen = "rgba(42, 255, 0, 0.3)";
 const translucentDarkGreen = "rgba(0, 195, 0, 0.8)";
 
@@ -27,25 +28,25 @@ export class TopBar {
     this.turretChoiceWidth = 124;
     this.turretChoices = [
       {
-        price: 20,
-        addTurret: (x, y) => {
-          this.game.turrets.push(new Turret(this.game, x, y + this.height));
-        },
-        barCoord: { x: 369, y: 0 },
-        image: document.getElementById("turretSprite"),
-      },
-      {
-        price: 80,
+        price: 10,
         addTurret: (x, y) => {
           this.game.turrets.push(
             new SlimeTurret(this.game, x, y + this.height)
           );
         },
-        barCoord: { x: 498, y: 0 },
+        barCoord: { x: 369, y: 0 },
         image: document.getElementById("slimeTurretSprite"),
       },
       {
-        price: 140,
+        price: 20,
+        addTurret: (x, y) => {
+          this.game.turrets.push(new Turret(this.game, x, y + this.height));
+        },
+        barCoord: { x: 498, y: 0 },
+        image: document.getElementById("turretSprite"),
+      },
+      {
+        price: 40,
         addTurret: (x, y) => {
           this.game.turrets.push(new FireTurret(this.game, x, y + this.height));
         },
@@ -53,7 +54,7 @@ export class TopBar {
         image: document.getElementById("fireTurretSprite"),
       },
       {
-        price: 400,
+        price: 60,
         addTurret: (x, y) => {
           this.game.turrets.push(
             new TeleportTurret(this.game, x, y + this.height)
@@ -83,13 +84,25 @@ export class TopBar {
               turretPoint.y + this.height + turretSpaceWidth / 2,
               turretSpaceWidth,
               turretSpaceWidth
-            ) &&
-            !turretPoint.filled
+            )
           ) {
-            turretPoint.filled = true;
-            this.selectedTurret.addTurret(turretPoint.x, turretPoint.y);
-            this.game.coins -= this.selectedTurret.price;
-            this.selectedTurret = null;
+            if (!turretPoint.filled) {
+              turretPoint.filled = true;
+              this.selectedTurret.addTurret(turretPoint.x, turretPoint.y);
+              this.game.coins -= this.selectedTurret.price;
+              this.selectedTurret = null;
+            } else {
+              this.game.turrets = this.game.turrets.filter(
+                (turret) =>
+                  !(
+                    turret.x === turretPoint.x &&
+                    turret.y === turretPoint.y + this.height
+                  )
+              );
+              this.selectedTurret.addTurret(turretPoint.x, turretPoint.y);
+              this.game.coins -= this.selectedTurret.price;
+              this.selectedTurret = null;
+            }
           }
         });
       }
@@ -98,14 +111,14 @@ export class TopBar {
   update(inputKeys) {
     if (
       inputKeys.includes("1") &&
-      this.game.coins >= this.turretChoices[turretMap.BASIC].price
-    ) {
-      this.selectedTurret = this.turretChoices[turretMap.BASIC];
-    } else if (
-      inputKeys.includes("2") &&
       this.game.coins >= this.turretChoices[turretMap.SLIME].price
     ) {
       this.selectedTurret = this.turretChoices[turretMap.SLIME];
+    } else if (
+      inputKeys.includes("2") &&
+      this.game.coins >= this.turretChoices[turretMap.BASIC].price
+    ) {
+      this.selectedTurret = this.turretChoices[turretMap.BASIC];
     } else if (
       inputKeys.includes("3") &&
       this.game.coins >= this.turretChoices[turretMap.FIRE].price
@@ -154,7 +167,11 @@ export class TopBar {
             40
           )
         ) {
-          context.fillStyle = translucentGreen;
+          if (turretPoint.filled) {
+            context.fillStyle = translucentOrange;
+          } else {
+            context.fillStyle = translucentGreen;
+          }
         }
       });
       context.fillRect(

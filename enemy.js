@@ -25,13 +25,13 @@ export class Grunt extends Enemy {
     this.maxHealth = 100;
     this.health = this.maxHealth;
     this.damage = 2;
-    this.value = 1;
+    this.value = 2;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
       this.game.height - this.height
     );
-    this.speed = generateRandomDecimalNumber(0.8, 1.2);
+    this.speed = generateRandomDecimalNumber(0.6, 0.8);
     this.burnRate = 0;
     this.fire = null;
     this.markedForDeletion = false;
@@ -41,7 +41,7 @@ export class Grunt extends Enemy {
       if (!this.fire) {
         this.fire = new Fire(this.x, this.y);
       } else {
-        this.fire.update(deltaTimeMultiplier, this.x, this.y);
+        this.fire.update(deltaTimeMultiplier, this.x + this.width / 2, this.y);
       }
       this.health -= this.burnRate * deltaTimeMultiplier;
     }
@@ -90,16 +90,26 @@ export class Runner extends Enemy {
     this.maxHealth = 40;
     this.health = this.maxHealth;
     this.damage = 1;
-    this.value = 2;
+    this.value = 1;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
       this.game.height - this.height
     );
     this.speed = generateRandomDecimalNumber(1.5, 3);
+    this.burnRate = 0;
+    this.fire = null;
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
+    if (this.burnRate) {
+      if (!this.fire) {
+        this.fire = new Fire(this.x, this.y);
+      } else {
+        this.fire.update(deltaTimeMultiplier, this.x + this.width / 2, this.y);
+      }
+      this.health -= this.burnRate * deltaTimeMultiplier;
+    }
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
       this.game.lives -= this.damage;
@@ -113,6 +123,9 @@ export class Runner extends Enemy {
     this.x -= normalizedSpeed;
   }
   draw(context) {
+    if (this.fire) {
+      this.fire.draw(context);
+    }
     context.fillStyle = "red";
     context.fillRect(
       this.x,
@@ -142,16 +155,26 @@ export class Tank extends Enemy {
     this.maxHealth = 500;
     this.health = this.maxHealth;
     this.damage = 4;
-    this.value = 3;
+    this.value = 4;
     this.x = this.game.width - this.width;
     this.y = generateRandomWholeNumber(
       this.game.topBar.height,
       this.game.height - this.height
     );
-    this.speed = generateRandomDecimalNumber(0.5, 1);
+    this.speed = generateRandomDecimalNumber(0.2, 0.4);
+    this.burnRate = 0;
+    this.fire = null;
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
+    if (this.burnRate) {
+      if (!this.fire) {
+        this.fire = new Fire(this.x, this.y);
+      } else {
+        this.fire.update(deltaTimeMultiplier, this.x + this.width / 2, this.y);
+      }
+      this.health -= this.burnRate * deltaTimeMultiplier;
+    }
     if (this.x <= -this.width) {
       this.markedForDeletion = true;
       this.game.lives -= this.damage;
@@ -165,6 +188,9 @@ export class Tank extends Enemy {
     this.x -= normalizedSpeed;
   }
   draw(context) {
+    if (this.fire) {
+      this.fire.draw(context);
+    }
     context.fillStyle = "red";
     context.fillRect(
       this.x,

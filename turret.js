@@ -77,6 +77,7 @@ export class Turret {
     this.height = 40;
     this.x = x;
     this.y = y;
+    this.id = Math.random() * 1000;
     this.rotation = 0;
     this.shots = [];
     this.fireTime = 1;
@@ -157,15 +158,15 @@ export class Turret {
 class SlimeShot extends Shot {
   constructor(game, turret, dx, dy) {
     super(game, turret, dx, dy);
-    this.speed = 25;
+    this.speed = 20;
     this.color = "lightGreen";
   }
   hit(enemy) {
     enemy.color = "lightGreen";
-    if (enemy.speed > 0.3) {
-      enemy.speed -= 0.1;
+    if (enemy.speed > 0.1 && enemy.speed > 0.4) {
+      enemy.speed -= 0.3;
     } else {
-      enemy.speed = 0.3;
+      enemy.speed = 0.1;
     }
   }
 }
@@ -219,7 +220,11 @@ class TeleportShot extends Shot {
     this.color = "lightBlue";
   }
   hit(enemy) {
-    enemy.x += 250;
+    if (enemy.x >= this.game.width - 200) {
+      enemy.x = this.game.widthw;
+    } else {
+      enemy.x += 200;
+    }
   }
 }
 
