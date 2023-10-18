@@ -34,6 +34,8 @@ export class Grunt extends Enemy {
     this.speed = generateRandomDecimalNumber(0.6, 0.8);
     this.burnRate = 0;
     this.fire = null;
+    this.sfx = new Audio();
+    this.sfx.src = "sfx/hit.wav";
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
@@ -46,6 +48,7 @@ export class Grunt extends Enemy {
       this.health -= this.burnRate * deltaTimeMultiplier;
     }
     if (this.x <= -this.width) {
+      this.sfx.play();
       this.markedForDeletion = true;
       this.game.lives -= this.damage;
     }

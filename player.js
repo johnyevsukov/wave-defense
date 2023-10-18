@@ -82,8 +82,12 @@ export class Player {
     this.speed = 3;
     this.rotation = 0;
     this.shots = [];
+    this.sfx = new Audio();
+    this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
     window.addEventListener("click", (e) => {
+      this.playSfx();
+
       const mouseClickX =
         e.pageX - (window.innerWidth / 2 - this.game.width / 2);
       const mouseClickY =
@@ -97,6 +101,13 @@ export class Player {
       const dy = y / l;
       this.shots.push(new Shot(this.game, this, dx, dy));
     });
+  }
+  playSfx() {
+    if (this.sfx.paused) {
+      this.sfx.play();
+    } else {
+      this.sfx.currentTime = 0;
+    }
   }
   checkMapBoundaries() {
     if (this.x < this.boundaries.left) {
