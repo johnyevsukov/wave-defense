@@ -1,3 +1,5 @@
+/* turret placement coordinate data */
+
 export const turretPoints = [
   {
     x: 40,

@@ -2,6 +2,8 @@
  * @type { HTMLCanvasElement }
  */
 
+/* render fire animation for enemies on fire */
+
 import {
   generateRandomWholeNumber,
   generateRandomDecimalNumber,
@@ -33,8 +35,10 @@ class Particle {
     }
   }
   draw(context) {
+    context.save();
     context.fillStyle = this.color;
     context.fillRect(this.x, this.y, this.width, this.height);
+    context.restore();
   }
 }
 

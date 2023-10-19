@@ -2,7 +2,9 @@
  * @type { HTMLCanvasElement }
  */
 
-import { checkRectangularCollision } from "./utils.js";
+/* game player */
+
+import { checkRectangularCollision, playSfx } from "./utils.js";
 
 class Shot {
   constructor(game, player, dx, dy) {
@@ -61,8 +63,10 @@ class Shot {
     this.checkMapBoundaries();
   }
   draw(context) {
+    context.save();
     context.fillStyle = "black";
     context.fillRect(this.x, this.y, this.width, this.height);
+    context.restore();
   }
 }
 
@@ -86,7 +90,7 @@ export class Player {
     this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
     window.addEventListener("click", (e) => {
-      this.playSfx();
+      playSfx(this.sfx);
 
       const mouseClickX =
         e.pageX - (window.innerWidth / 2 - this.game.width / 2);
@@ -101,13 +105,6 @@ export class Player {
       const dy = y / l;
       this.shots.push(new Shot(this.game, this, dx, dy));
     });
-  }
-  playSfx() {
-    if (this.sfx.paused) {
-      this.sfx.play();
-    } else {
-      this.sfx.currentTime = 0;
-    }
   }
   checkMapBoundaries() {
     if (this.x < this.boundaries.left) {
@@ -157,8 +154,10 @@ export class Player {
       this.height
     );
     context.restore();
+    context.save();
     this.shots.forEach((shot) => {
       shot.draw(context);
     });
+    context.restore();
   }
 }

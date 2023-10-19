@@ -2,7 +2,9 @@
  * @type { HTMLCanvasElement }
  */
 
-import { checkRectangularCollision } from "./utils.js";
+/* game turrets and turret shots */
+
+import { checkRectangularCollision, playSfx } from "./utils.js";
 
 class Shot {
   constructor(game, turret, dx, dy) {
@@ -65,8 +67,10 @@ class Shot {
     this.checkMapBoundaries();
   }
   draw(context) {
+    context.save();
     context.fillStyle = this.color;
     context.fillRect(this.x, this.y, this.width, this.height);
+    context.restore();
   }
 }
 
@@ -108,7 +112,7 @@ export class Turret {
     return { dx, dy };
   }
   shoot(enemy) {
-    this.sfx.play();
+    playSfx(this.sfx);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(new Shot(this.game, this, trajectory.dx, trajectory.dy));
   }
@@ -178,7 +182,7 @@ export class SlimeTurret extends Turret {
     this.image = document.getElementById("slimeTurretSprite");
   }
   shoot(enemy) {
-    this.sfx.play();
+    playSfx(this.sfx);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new SlimeShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -205,7 +209,7 @@ export class FireTurret extends Turret {
     this.image = document.getElementById("fireTurretSprite");
   }
   shoot(enemy) {
-    this.sfx.play();
+    playSfx(this.sfx);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new FireShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -221,7 +225,7 @@ class TeleportShot extends Shot {
   }
   hit(enemy) {
     if (enemy.x >= this.game.width - 200) {
-      enemy.x = this.game.widthw;
+      enemy.x = this.game.width;
     } else {
       enemy.x += 200;
     }
@@ -235,7 +239,7 @@ export class TeleportTurret extends Turret {
     this.image = document.getElementById("teleportTurretSprite");
   }
   shoot(enemy) {
-    this.sfx.play();
+    playSfx(this.sfx);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new TeleportShot(this.game, this, trajectory.dx, trajectory.dy)

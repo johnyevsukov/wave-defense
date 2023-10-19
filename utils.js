@@ -1,3 +1,7 @@
+/* reused game utility functions for collision
+detection, random number generation, and playing
+sound effects */
+
 export const generateRandomWholeNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -5,6 +9,14 @@ export const generateRandomWholeNumber = (min, max) => {
 export const generateRandomDecimalNumber = (min, max) => {
   const diff = max - min;
   return Math.random() * diff + min;
+};
+
+export const playSfx = (sfx) => {
+  if (sfx.paused) {
+    sfx.play();
+  } else {
+    sfx.currentTime = 0;
+  }
 };
 
 export const checkRectangularCollision = (

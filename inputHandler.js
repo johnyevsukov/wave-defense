@@ -1,3 +1,5 @@
+/* listen for player key interaction */
+
 export class InputHandler {
   constructor(game) {
     this.game = game;
@@ -8,6 +10,8 @@ export class InputHandler {
           e.key === "s" ||
           e.key === "a" ||
           e.key === "d" ||
+          e.key === "m" ||
+          e.key === "r" ||
           e.key === "1" ||
           e.key === "2" ||
           e.key === "3" ||
@@ -23,6 +27,8 @@ export class InputHandler {
         e.key === "s" ||
         e.key === "a" ||
         e.key === "d" ||
+        e.key === "m" ||
+        e.key === "r" ||
         e.key === "1" ||
         e.key === "2" ||
         e.key === "3" ||

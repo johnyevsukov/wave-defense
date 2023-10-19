@@ -132,6 +132,7 @@ export class TopBar {
     }
   }
   draw(context) {
+    context.save();
     this.turretChoices.forEach((turretChoice) => {
       if (this.game.coins >= turretChoice.price) {
         context.fillStyle = translucentGreen;
@@ -195,5 +196,6 @@ export class TopBar {
     context.fillStyle = "gold";
     context.font = "35px Arial";
     context.fillText(this.game.coins, 189, 36);
+    context.restore();
   }
 }

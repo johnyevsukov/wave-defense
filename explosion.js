@@ -2,6 +2,8 @@
  * @type { HTMLCanvasElement }
  */
 
+/* render explosion animation for enemy defeat */
+
 import {
   generateRandomWholeNumber,
   generateRandomDecimalNumber,
@@ -33,8 +35,10 @@ class Particle {
     }
   }
   draw(context) {
+    context.save();
     context.fillStyle = this.color;
     context.fillRect(this.x, this.y, this.width, this.height);
+    context.restore();
   }
 }
 
@@ -47,7 +51,7 @@ export class Explosion {
     this.particles = [];
     this.markedForDeletion = false;
     for (let i = 0; i < this.particleCount; i++) {
-      this.particles.push(new Particle(this.x, this.y));
+      this.particles.push(new Particle(this.x, this.y, color));
     }
   }
   update(deltaTimeMultiplier) {
