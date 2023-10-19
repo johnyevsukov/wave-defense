@@ -53,34 +53,14 @@ export const waves = [
     tankCount: 20,
   },
   {
-    gruntCount: 100,
+    gruntCount: 80,
+    runnerCount: 30,
+    tankCount: 20,
+  },
+  {
+    gruntCount: 90,
     runnerCount: 30,
     tankCount: 30,
-  },
-  {
-    gruntCount: 100,
-    runnerCount: 50,
-    tankCount: 30,
-  },
-  {
-    gruntCount: 120,
-    runnerCount: 50,
-    tankCount: 30,
-  },
-  {
-    gruntCount: 130,
-    runnerCount: 60,
-    tankCount: 30,
-  },
-  {
-    gruntCount: 130,
-    runnerCount: 60,
-    tankCount: 30,
-  },
-  {
-    gruntCount: 140,
-    runnerCount: 70,
-    tankCount: 80,
   },
 ];
 

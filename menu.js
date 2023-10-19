@@ -53,7 +53,7 @@ export class Menu {
       "earn coins by destroying enemies",
       "purchase / place turrets for help",
       "don't let your lives reach 0",
-      "survive all 15 waves of enemies",
+      "survive all 11 waves of enemies",
     ];
     this.turretDescriptions = [
       "slime - slows enemies down",
