@@ -112,7 +112,7 @@ export class Turret {
     return { dx, dy };
   }
   shoot(enemy) {
-    playSfx(this.sfx);
+    playSfx(this.sfx, this.game.muted);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(new Shot(this.game, this, trajectory.dx, trajectory.dy));
   }
@@ -167,7 +167,7 @@ class SlimeShot extends Shot {
   }
   hit(enemy) {
     enemy.color = "lightGreen";
-    if (enemy.speed > 0.1 && enemy.speed > 0.4) {
+    if (enemy.speed >= 0.4) {
       enemy.speed -= 0.3;
     } else {
       enemy.speed = 0.1;
@@ -182,7 +182,7 @@ export class SlimeTurret extends Turret {
     this.image = document.getElementById("slimeTurretSprite");
   }
   shoot(enemy) {
-    playSfx(this.sfx);
+    playSfx(this.sfx, this.game.muted);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new SlimeShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -209,7 +209,7 @@ export class FireTurret extends Turret {
     this.image = document.getElementById("fireTurretSprite");
   }
   shoot(enemy) {
-    playSfx(this.sfx);
+    playSfx(this.sfx, this.game.muted);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new FireShot(this.game, this, trajectory.dx, trajectory.dy)
@@ -239,7 +239,7 @@ export class TeleportTurret extends Turret {
     this.image = document.getElementById("teleportTurretSprite");
   }
   shoot(enemy) {
-    playSfx(this.sfx);
+    playSfx(this.sfx, this.game.muted);
     const trajectory = this.getShotTrajectory(enemy);
     this.shots.push(
       new TeleportShot(this.game, this, trajectory.dx, trajectory.dy)

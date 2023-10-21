@@ -10,6 +10,7 @@ import {
 } from "./utils.js";
 import { Explosion } from "./explosion.js";
 import { Fire } from "./fire.js";
+import { playSfx } from "./utils.js";
 
 export class Grunt {
   constructor(game) {
@@ -30,8 +31,10 @@ export class Grunt {
     this.speed = generateRandomDecimalNumber(0.6, 0.8);
     this.burnRate = 0;
     this.fire = null;
-    this.sfx = new Audio();
-    this.sfx.src = "sfx/hit.wav";
+    this.damageSfx = new Audio();
+    this.damageSfx.src = "sfx/hit.wav";
+    this.defeatSfx = new Audio();
+    this.defeatSfx.src = "sfx/enemy-defeat.wav";
     this.markedForDeletion = false;
   }
   update(deltaTimeMultiplier) {
@@ -44,11 +47,12 @@ export class Grunt {
       this.health -= this.burnRate * deltaTimeMultiplier;
     }
     if (this.x <= -this.width) {
-      this.sfx.play();
+      playSfx(this.damageSfx, this.game.muted);
       this.markedForDeletion = true;
       this.game.lives -= this.damage;
     }
     if (this.health <= 0) {
+      playSfx(this.defeatSfx, this.game.muted);
       this.game.explosions.push(new Explosion(this.x, this.y, this.color));
       this.markedForDeletion = true;
       this.game.coins += this.value;

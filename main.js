@@ -7,21 +7,41 @@ import { TopBar } from "./topBar.js";
 import { Background } from "./background.js";
 import { Player } from "./player.js";
 import { Menu } from "./menu.js";
-import { waves, addWaveEnemies, drawWaveText } from "./waves.js";
 import { EndGameMessage } from "./endGameMessage.js";
+import { waves, addWaveEnemies, drawWaveText } from "./waves.js";
+import { turretPoints } from "./turretPoints.js";
+import { playSfx } from "./utils.js";
 
 window.addEventListener("load", function () {
+  // handle load screen
+  const startAudio = new Audio();
+  startAudio.src = "sfx/start.wav";
+  document.getElementById("loadText").style.display = "none";
+  const startButton = document.getElementById("startButton");
+  startButton.style.display = "block";
+  const loadScreen = document.getElementById("loadScreen");
+  startButton.onclick = () => {
+    playSfx(startAudio);
+    loadScreen.style.display = "none";
+    setTimeout(() => {
+      game.menu.isOpen = false;
+    }, 0);
+  };
+
+  // setup canvas
   const canvas = document.getElementById("mainCanvas");
   const ctx = canvas.getContext("2d");
   canvas.width = 880;
   canvas.height = 510;
 
+  // setup game
   class Game {
     constructor(width, height) {
       this.fps = 60;
       this.frameInterval = 1000 / this.fps;
       this.width = width;
       this.height = height;
+      this.muted = false;
       this.coins = 0;
       this.maxLives = 20;
       this.lives = this.maxLives;
@@ -38,7 +58,12 @@ window.addEventListener("load", function () {
       this.explosions = [];
       this.lost = false;
       this.won = false;
+      this.victorySfx = new Audio();
+      this.victorySfx.src = "sfx/game-victory.wav";
+      this.lossSfx = new Audio();
+      this.lossSfx.src = "sfx/game-loss.wav";
       this.restartGame = this.debouncedGameRestart();
+      this.toggleMute = this.debouncedMute();
       this.cursorX = 0;
       this.cursorY = 0;
       window.addEventListener("mousemove", (e) => {
@@ -64,12 +89,26 @@ window.addEventListener("load", function () {
           this.player.x = 20;
           this.x = 20;
           this.y = this.height - this.player.height - 20;
+          turretPoints.forEach((point) => {
+            point.filled = false;
+          });
+        }, 50);
+      };
+    }
+    // prevent spamming mute
+    debouncedMute() {
+      let timeoutId;
+      return function () {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          this.muted = !this.muted;
         }, 50);
       };
     }
     primaryGameUpdate(deltaTimeMultiplier) {
       // loss condition
       if (this.lives <= 0) {
+        playSfx(this.lossSfx, this.muted);
         this.lost = true;
       }
       // next wave condition
@@ -85,6 +124,7 @@ window.addEventListener("load", function () {
         !this.enemies.length &&
         this.currentWaveIndex + 1 === waves.length
       ) {
+        playSfx(this.victorySfx, this.muted);
         this.won = true;
       }
       // update all assets
@@ -110,6 +150,9 @@ window.addEventListener("load", function () {
       }
       if (!this.won && !this.lost) {
         this.menu.update(this.input.keys);
+      }
+      if (this.input.keys.includes("m")) {
+        this.toggleMute();
       }
       if (this.input.keys.includes("r")) {
         this.restartGame();

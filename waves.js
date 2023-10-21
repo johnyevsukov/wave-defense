@@ -5,6 +5,7 @@
 /* enemy wave data / supporting functions */
 
 import { Grunt, Runner, Tank } from "./enemy.js";
+import { playSfx } from "./utils.js";
 
 export const waves = [
   {
@@ -57,14 +58,15 @@ export const waves = [
     runnerCount: 30,
     tankCount: 20,
   },
-  {
-    gruntCount: 90,
-    runnerCount: 30,
-    tankCount: 30,
-  },
 ];
 
+const nextWaveSfx = new Audio();
+nextWaveSfx.src = "sfx/next-wave.wav";
+
 export const addWaveEnemies = (game, wave) => {
+  if (wave.runnerCount > 0) {
+    playSfx(nextWaveSfx);
+  }
   for (let i = 0; i < wave.gruntCount; i++) {
     game.enemies.push(new Grunt(game));
   }
@@ -78,10 +80,10 @@ export const addWaveEnemies = (game, wave) => {
 
 export const drawWaveText = (game, context) => {
   context.save();
-  context.translate(game.width - 75, game.height / 2 - 65);
+  context.translate(game.width - 75, game.height / 2 - 68);
   context.rotate(Math.PI / 2);
   context.fillStyle = "rgba(0, 0, 0, 0.2)";
-  context.font = "48px Arial";
+  context.font = "32px 'Press Start 2P'";
   context.fillText(`Wave ${game.currentWaveIndex + 1}`, 0, 0);
   context.restore();
 };

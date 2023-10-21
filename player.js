@@ -90,20 +90,22 @@ export class Player {
     this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
     window.addEventListener("click", (e) => {
-      playSfx(this.sfx);
+      if (!this.game.menu.isOpen) {
+        playSfx(this.sfx, this.game.muted);
 
-      const mouseClickX =
-        e.pageX - (window.innerWidth / 2 - this.game.width / 2);
-      const mouseClickY =
-        e.pageY - (window.innerHeight / 2 - this.game.height / 2);
+        const mouseClickX =
+          e.pageX - (window.innerWidth / 2 - this.game.width / 2);
+        const mouseClickY =
+          e.pageY - (window.innerHeight / 2 - this.game.height / 2);
 
-      const x = mouseClickX - (this.x + this.width / 2);
-      const y = mouseClickY - (this.y + this.height / 2);
-      const l = Math.sqrt(x * x + y * y);
+        const x = mouseClickX - (this.x + this.width / 2);
+        const y = mouseClickY - (this.y + this.height / 2);
+        const l = Math.sqrt(x * x + y * y);
 
-      const dx = x / l;
-      const dy = y / l;
-      this.shots.push(new Shot(this.game, this, dx, dy));
+        const dx = x / l;
+        const dy = y / l;
+        this.shots.push(new Shot(this.game, this, dx, dy));
+      }
     });
   }
   checkMapBoundaries() {

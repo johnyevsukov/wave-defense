@@ -11,7 +11,10 @@ export const generateRandomDecimalNumber = (min, max) => {
   return Math.random() * diff + min;
 };
 
-export const playSfx = (sfx) => {
+export const playSfx = (sfx, muted) => {
+  if (muted) {
+    return;
+  }
   if (sfx.paused) {
     sfx.play();
   } else {

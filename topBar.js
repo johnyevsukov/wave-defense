@@ -5,6 +5,7 @@
 import { FireTurret, SlimeTurret, TeleportTurret, Turret } from "./turret.js";
 import { turretPoints } from "./turretPoints.js";
 import { checkRectangularCollision } from "./utils.js";
+import { playSfx } from "./utils.js";
 
 const turretMap = {
   SLIME: 0,
@@ -25,11 +26,21 @@ export class TopBar {
     this.game = game;
     this.width = this.game.width;
     this.height = 50;
+    this.errorSfx = new Audio();
+    this.errorSfx.src = "sfx/error.wav";
+    this.selectSfx = new Audio();
+    this.selectSfx.src = "sfx/select.wav";
+    this.placeSfx = new Audio();
+    this.placeSfx.src = "sfx/place-turret.wav";
+    this.showLowCoinsMessage = false;
+    this.lowCoinsMessage = "Not enough coins!";
+    this.flashLowCoinsMessage = this.debounceLowCoinsMessage();
     this.turretChoiceWidth = 124;
     this.turretChoices = [
       {
         price: 10,
         addTurret: (x, y) => {
+          playSfx(this.placeSfx);
           this.game.turrets.push(
             new SlimeTurret(this.game, x, y + this.height)
           );
@@ -40,6 +51,7 @@ export class TopBar {
       {
         price: 20,
         addTurret: (x, y) => {
+          playSfx(this.placeSfx);
           this.game.turrets.push(new Turret(this.game, x, y + this.height));
         },
         barCoord: { x: 498, y: 0 },
@@ -48,6 +60,7 @@ export class TopBar {
       {
         price: 40,
         addTurret: (x, y) => {
+          playSfx(this.placeSfx);
           this.game.turrets.push(new FireTurret(this.game, x, y + this.height));
         },
         barCoord: { x: 627, y: 0 },
@@ -56,6 +69,7 @@ export class TopBar {
       {
         price: 60,
         addTurret: (x, y) => {
+          playSfx(this.placeSfx);
           this.game.turrets.push(
             new TeleportTurret(this.game, x, y + this.height)
           );
@@ -64,7 +78,6 @@ export class TopBar {
         image: document.getElementById("teleportTurretSprite"),
       },
     ];
-
     this.selectedTurret = null;
     this.image = document.getElementById("topBar");
     window.addEventListener("click", (e) => {
@@ -108,27 +121,67 @@ export class TopBar {
       }
     });
   }
+  debounceLowCoinsMessage() {
+    let timeoutId;
+    return function () {
+      this.showLowCoinsMessage = true;
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        this.showLowCoinsMessage = false;
+      }, 1000);
+    };
+  }
   update(inputKeys) {
-    if (
-      inputKeys.includes("1") &&
-      this.game.coins >= this.turretChoices[turretMap.SLIME].price
-    ) {
-      this.selectedTurret = this.turretChoices[turretMap.SLIME];
-    } else if (
-      inputKeys.includes("2") &&
-      this.game.coins >= this.turretChoices[turretMap.BASIC].price
-    ) {
-      this.selectedTurret = this.turretChoices[turretMap.BASIC];
-    } else if (
-      inputKeys.includes("3") &&
-      this.game.coins >= this.turretChoices[turretMap.FIRE].price
-    ) {
-      this.selectedTurret = this.turretChoices[turretMap.FIRE];
-    } else if (
-      inputKeys.includes("4") &&
-      this.game.coins >= this.turretChoices[turretMap.TELEPORT].price
-    ) {
-      this.selectedTurret = this.turretChoices[turretMap.TELEPORT];
+    if (inputKeys.includes("1")) {
+      if (this.game.coins >= this.turretChoices[turretMap.SLIME].price) {
+        if (!this.game.muted) {
+          this.selectSfx.play();
+        }
+        this.selectedTurret = this.turretChoices[turretMap.SLIME];
+      } else {
+        this.flashLowCoinsMessage();
+        if (!this.game.muted) {
+          this.errorSfx.play();
+        }
+      }
+    } else if (inputKeys.includes("2")) {
+      if (this.game.coins >= this.turretChoices[turretMap.BASIC].price) {
+        if (!this.game.muted) {
+          this.selectSfx.play();
+        }
+        this.selectedTurret = this.turretChoices[turretMap.BASIC];
+      } else {
+        this.flashLowCoinsMessage();
+        if (!this.game.muted) {
+          this.errorSfx.play();
+        }
+      }
+    } else if (inputKeys.includes("3")) {
+      if (this.game.coins >= this.turretChoices[turretMap.FIRE].price) {
+        if (!this.game.muted) {
+          this.selectSfx.play();
+        }
+        this.selectedTurret = this.turretChoices[turretMap.FIRE];
+      } else {
+        this.flashLowCoinsMessage();
+        if (!this.game.muted) {
+          this.errorSfx.play();
+        }
+      }
+    } else if (inputKeys.includes("4")) {
+      if (this.game.coins >= this.turretChoices[turretMap.TELEPORT].price) {
+        if (!this.game.muted) {
+          this.selectSfx.play();
+        }
+        this.selectedTurret = this.turretChoices[turretMap.TELEPORT];
+      } else {
+        this.flashLowCoinsMessage();
+        if (!this.game.muted) {
+          this.errorSfx.play();
+        }
+      }
+    } else if (inputKeys.includes("Escape")) {
+      this.selectedTurret = null;
     }
   }
   draw(context) {
@@ -191,11 +244,15 @@ export class TopBar {
     }
     context.drawImage(this.image, 0, 0, this.width, this.height);
     context.fillStyle = "red";
-    context.font = "35px Arial";
-    context.fillText(this.game.lives, 70, 36);
+    context.font = "23px 'Press Start 2P'";
+    context.fillText(this.game.lives, 72, 36);
     context.fillStyle = "gold";
-    context.font = "35px Arial";
-    context.fillText(this.game.coins, 189, 36);
+    context.fillText(this.game.coins, 191, 36);
+    if (this.showLowCoinsMessage) {
+      context.font = "25px 'Press Start 2P'";
+      context.fillStyle = "rgba(255, 0, 0, 0.2)";
+      context.fillText(this.lowCoinsMessage, 275, 294);
+    }
     context.restore();
   }
 }

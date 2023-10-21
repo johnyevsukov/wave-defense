@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wave Defense</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Press Start 2P"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div id="loadScreen">
+      <div id="loadContent">
+        <p id="loadTitle">Wave Defense</p>
+        <div id="buttonTextWrapper">
+          <button id="startButton">START</button>
+          <p id="loadText">loading...</p>
+        </div>
+        <p id="objectiveText">Survive all 10 waves</p>
+      </div>
+    </div>
     <canvas id="mainCanvas"></canvas>
     <h1 id="title">Wave Defense</h1>
     <img id="titleImage" src="assets/turret-sprite.png" />
@@ -17,6 +31,10 @@
     <img id="teleportTurretSprite" src="assets/teleport-turret-sprite.png" />
     <img id="topBar" src="assets/top-bar.png" />
     <img id="background" src="assets/background.png" />
+    <img id="controls" src="assets/controls.png" />
+    <img id="info" src="assets/info.png" />
+    <img id="mute" src="assets/mute.png" />
+    <img id="sound" src="assets/sound.png" />
     <img id="coin" src="assets/coin.png" />
     <img id="heart" src="assets/heart.png" />
     <script type="module" src="main.js"></script>
