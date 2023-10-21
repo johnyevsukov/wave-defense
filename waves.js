@@ -65,7 +65,7 @@ nextWaveSfx.src = "sfx/next-wave.wav";
 
 export const addWaveEnemies = (game, wave) => {
   if (wave.runnerCount > 0) {
-    playSfx(nextWaveSfx);
+    playSfx(nextWaveSfx, game.muted);
   }
   for (let i = 0; i < wave.gruntCount; i++) {
     game.enemies.push(new Grunt(game));
