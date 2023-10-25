@@ -12,6 +12,40 @@ import { waves, addWaveEnemies, drawWaveText } from "./waves.js";
 import { turretPoints } from "./turretPoints.js";
 import { playSfx } from "./utils.js";
 
+// display chrome banner or mobile overlay if needed
+(() => {
+  const mobileOverlay = document.getElementById("mobileOverlay");
+  const chromeBanner = document.getElementById("chromeBanner");
+
+  let onMobile = false;
+  let onChrome = false;
+
+  const mobileChecks = [
+    /Android/i,
+    /webOS/i,
+    /iPhone/i,
+    /iPad/i,
+    /iPod/i,
+    /BlackBerry/i,
+    /Windows Phone/i,
+  ];
+  mobileChecks.some((mobileCheck) => {
+    if (navigator.userAgent.match(mobileCheck)) {
+      onMobile = true;
+    }
+  });
+
+  if (navigator.userAgent.indexOf("Chrome") !== -1) {
+    onChrome = true;
+  }
+
+  if (onMobile) {
+    mobileOverlay.style.display = "flex";
+  } else if (!onChrome) {
+    chromeBanner.style.display = "block";
+  }
+})();
+
 window.addEventListener("load", function () {
   // handle load screen
   const startAudio = new Audio();

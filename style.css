@@ -66,16 +66,17 @@ body {
   font-weight: 700;
   color: white;
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 10px;
+  left: 10px;
+  font-size: 20px;
   user-select: none;
 }
 
 #titleImage {
   position: absolute;
-  bottom: 12px;
-  left: 265px;
-  width: 50px;
+  bottom: 6px;
+  left: 174px;
+  width: 30px;
   transform: rotate(90deg);
 }
 
@@ -83,6 +84,46 @@ body {
   letter-spacing: 2px;
   font-size: 22px;
   margin: 10px;
+}
+
+#chromeBanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 10px;
+  background: #fff53d;
+  display: none;
+}
+
+#chromeBannerText {
+  font-family: Arial;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 20px;
+}
+
+#mobileOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  height: 100%;
+  width: 100%;
+  z-index: 101;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+#mobileOverlayText {
+  font-family: Arial;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 28px;
 }
 
 #mainCanvas {
