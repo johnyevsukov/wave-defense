@@ -42,7 +42,7 @@ Local:
   i - info  
   m - mute  
   esc - close menu / deselect turret  
-  click - fire / place turret
+  click - fire / place turret  
   spacebar - fire / rapid fire (hold)
 
 ----
