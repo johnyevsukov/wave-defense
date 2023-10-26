@@ -18,8 +18,8 @@ Local:
 
 - Open the index.html file in your browser (runs best on google chrome)
 
-### Controls
 ----
+### Controls
 
 Player movement:
 
@@ -45,7 +45,7 @@ esc - close menu / deselect turret
 click - fire / place turret
 spacebar - fire / rapid fire (hold)
 
-### Demo
 ----
+### Demo
 
 ![](https://github.com/johnyevsukov/wave-defense/assets/10480867/2f74bcf1-2133-4f42-a7bb-d772152d6a1f)
