@@ -84,6 +84,10 @@ export const drawWaveText = (game, context) => {
   context.rotate(Math.PI / 2);
   context.fillStyle = "rgba(0, 0, 0, 0.2)";
   context.font = "32px 'Press Start 2P'";
-  context.fillText(`Wave ${game.currentWaveIndex + 1}`, 0, 0);
+  if (game.currentWaveIndex + 1 === waves.length) {
+    context.fillText(`Final Wave`, -60, 0);
+  } else {
+    context.fillText(`Wave ${game.currentWaveIndex + 1}`, 0, 0);
+  }
   context.restore();
 };
