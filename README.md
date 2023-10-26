@@ -21,4 +21,4 @@ Local:
 ### Demo
 ----
 
-![](https://github.com/johnyevsukov/wave-defense/assets/10480867/d660c982-ffa4-4b10-b27e-1669d77c0e66)
+![](https://github.com/johnyevsukov/wave-defense/assets/10480867/2f74bcf1-2133-4f42-a7bb-d772152d6a1f)
