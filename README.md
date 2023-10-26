@@ -24,35 +24,24 @@ Local:
 Player movement:
 
 w - up  
-
 a - left  
-
 s - down  
-
 d - right
 
 Turret Select: 
 
 1 - slime  
-
 2 - basic  
-
 3 - fire  
-
 4 - teleport
 
 Other:
 
 r - restart  
-
 c - controls  
-
 i - info  
-
 m - mute  
-
 esc - close menu / deselect turret  
-
 click - fire / place turret
 spacebar - fire / rapid fire (hold)
 
