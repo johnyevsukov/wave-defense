@@ -1,4 +1,4 @@
-wave-defense
+Wave Defense
 ----
 
 A 2D top down shooter game. Build turrets to help stop waves of enemies. Don't let your lives reach 0. Survive all 10 waves. Built with vanilla JS, CSS and HTML. No libraries or bells and whistles.
