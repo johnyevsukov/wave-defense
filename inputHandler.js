@@ -14,6 +14,7 @@ export class InputHandler {
           e.key === "r" ||
           e.key === "c" ||
           e.key === "i" ||
+          e.key === " " ||
           e.key === "Escape" ||
           e.key === "1" ||
           e.key === "2" ||
@@ -34,6 +35,7 @@ export class InputHandler {
         e.key === "r" ||
         e.key === "c" ||
         e.key === "i" ||
+        e.key === " " ||
         e.key === "Escape" ||
         e.key === "1" ||
         e.key === "2" ||

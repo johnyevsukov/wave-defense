@@ -89,24 +89,42 @@ export class Player {
     this.sfx = new Audio();
     this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
+    this.rapidFireTimer = 9;
+    this.rapidFireRate = 10;
     window.addEventListener("click", (e) => {
-      if (!this.game.menu.isOpen) {
-        playSfx(this.sfx, this.game.muted);
-
-        const mouseClickX =
-          e.pageX - (window.innerWidth / 2 - this.game.width / 2);
-        const mouseClickY =
-          e.pageY - (window.innerHeight / 2 - this.game.height / 2);
-
-        const x = mouseClickX - (this.x + this.width / 2);
-        const y = mouseClickY - (this.y + this.height / 2);
-        const l = Math.sqrt(x * x + y * y);
-
-        const dx = x / l;
-        const dy = y / l;
-        this.shots.push(new Shot(this.game, this, dx, dy));
-      }
+      this.clickShoot(e);
     });
+  }
+  shoot(targetX, targetY) {
+    if (!this.game.menu.isOpen) {
+      playSfx(this.sfx, this.game.muted);
+
+      const x = targetX - (this.x + this.width / 2);
+      const y = targetY - (this.y + this.height / 2);
+      const l = Math.sqrt(x * x + y * y);
+
+      const dx = x / l;
+      const dy = y / l;
+      this.shots.push(new Shot(this.game, this, dx, dy));
+    }
+  }
+  clickShoot(e) {
+    if (!this.game.input.keys.includes(" ")) {
+      const mouseClickX =
+        e.pageX - (window.innerWidth / 2 - this.game.width / 2);
+      const mouseClickY =
+        e.pageY - (window.innerHeight / 2 - this.game.height / 2);
+
+      this.shoot(mouseClickX, mouseClickY);
+    }
+  }
+  spacebarShoot(deltaTimeMultiplier) {
+    if (this.rapidFireTimer < this.rapidFireRate) {
+      this.rapidFireTimer += 1 * deltaTimeMultiplier;
+    } else {
+      this.shoot(this.game.cursorX, this.game.cursorY);
+      this.rapidFireTimer = 0;
+    }
   }
   checkMapBoundaries() {
     if (this.x < this.boundaries.left) {
@@ -137,6 +155,11 @@ export class Player {
     }
     if (inputKeys.includes("d")) {
       this.x += normalizedSpeed;
+    }
+    if (inputKeys.includes(" ")) {
+      this.spacebarShoot(deltaTimeMultiplier);
+    } else if (this.rapidFireTimer !== 9) {
+      this.rapidFireTimer = 9;
     }
     this.checkMapBoundaries();
     this.shots.forEach((shot) => {
