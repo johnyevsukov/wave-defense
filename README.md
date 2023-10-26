@@ -8,7 +8,7 @@ A 2D top down shooter game. Build turrets to help stop waves of enemies. Don't l
 
 Online:
 
-- [Wave Defense](wave-defense.vercel.app/)
+- [Wave Defense](https://wave-defense.vercel.app/)
 
 Local:
 
@@ -21,21 +21,21 @@ Local:
 ----
 ### Controls
 
-Player movement:
+- Player movement:
 
 w - up  
 a - left  
 s - down  
 d - right
 
-Turret Select: 
+- Turret Select: 
 
 1 - slime  
 2 - basic  
 3 - fire  
 4 - teleport
 
-Other:
+- Other:
 
 r - restart  
 c - controls  
