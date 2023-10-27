@@ -40,7 +40,7 @@ export class TopBar {
       {
         price: 10,
         addTurret: (x, y) => {
-          playSfx(this.placeSfx);
+          playSfx(this.placeSfx, this.game.muted);
           this.game.turrets.push(
             new SlimeTurret(this.game, x, y + this.height)
           );
@@ -51,7 +51,7 @@ export class TopBar {
       {
         price: 20,
         addTurret: (x, y) => {
-          playSfx(this.placeSfx);
+          playSfx(this.placeSfx, this.game.muted);
           this.game.turrets.push(new Turret(this.game, x, y + this.height));
         },
         barCoord: { x: 498, y: 0 },
@@ -60,7 +60,7 @@ export class TopBar {
       {
         price: 40,
         addTurret: (x, y) => {
-          playSfx(this.placeSfx);
+          playSfx(this.placeSfx, this.game.muted);
           this.game.turrets.push(new FireTurret(this.game, x, y + this.height));
         },
         barCoord: { x: 627, y: 0 },
@@ -69,7 +69,7 @@ export class TopBar {
       {
         price: 60,
         addTurret: (x, y) => {
-          playSfx(this.placeSfx);
+          playSfx(this.placeSfx, this.game.muted);
           this.game.turrets.push(
             new TeleportTurret(this.game, x, y + this.height)
           );

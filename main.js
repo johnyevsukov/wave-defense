@@ -50,10 +50,12 @@ window.addEventListener("load", function () {
   // handle load screen
   const startAudio = new Audio();
   startAudio.src = "sfx/start.wav";
+
   document.getElementById("loadText").style.display = "none";
+  const loadScreen = document.getElementById("loadScreen");
   const startButton = document.getElementById("startButton");
   startButton.style.display = "block";
-  const loadScreen = document.getElementById("loadScreen");
+
   startButton.onclick = () => {
     playSfx(startAudio);
     loadScreen.style.display = "none";

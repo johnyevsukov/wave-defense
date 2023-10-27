@@ -14,6 +14,7 @@ export class EndGameMessage {
     // dark screen overlay
     context.fillStyle = "rgba(0, 0, 0, 0.7)";
     context.fillRect(0, 0, this.game.width, this.game.height);
+
     // victory / defeat text
     context.font = "100px Arial";
     context.fillStyle = "white";
@@ -30,6 +31,7 @@ export class EndGameMessage {
         this.game.height / 2 + 32
       );
     }
+
     // restart game text
     context.font = "40px Arial";
     context.fillText(

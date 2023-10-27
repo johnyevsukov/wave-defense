@@ -2,7 +2,7 @@
  * @type { HTMLCanvasElement }
  */
 
-/* render game background image, mute toggle image, and info / controls keys */
+/* render game background image, mute toggle image, and info / controls keys text */
 
 export class Background {
   constructor(game) {

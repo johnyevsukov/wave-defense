@@ -89,8 +89,8 @@ export class Player {
     this.sfx = new Audio();
     this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
-    this.rapidFireTimer = 9;
     this.rapidFireRate = 10;
+    this.rapidFireTimer = this.rapidFireRate - 1;
     window.addEventListener("click", (e) => {
       this.clickShoot(e);
     });
@@ -158,8 +158,8 @@ export class Player {
     }
     if (inputKeys.includes(" ")) {
       this.spacebarShoot(deltaTimeMultiplier);
-    } else if (this.rapidFireTimer !== 9) {
-      this.rapidFireTimer = 9;
+    } else if (this.rapidFireTimer !== this.rapidFireRate - 1) {
+      this.rapidFireTimer = this.rapidFireRate - 1;
     }
     this.checkMapBoundaries();
     this.shots.forEach((shot) => {
