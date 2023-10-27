@@ -21,21 +21,21 @@ Local:
 ----
 ### Controls
 
-- Player movement:
+Player movement:
 
   w - up  
   a - left  
   s - down  
   d - right
 
-- Turret Select: 
+Turret Select: 
 
   1 - slime  
   2 - basic  
   3 - fire  
   4 - teleport
 
-- Other:
+Other:
 
   r - restart  
   c - controls  
