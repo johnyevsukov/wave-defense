@@ -48,4 +48,6 @@ Other:
 ----
 ### Demo
 
+<img width="886" alt="Screenshot 2023-10-26 at 4 18 00 PM" src="https://github.com/johnyevsukov/wave-defense/assets/10480867/36874808-fed1-4adf-93f9-9a5552c163f0">
+
 ![](https://github.com/johnyevsukov/wave-defense/assets/10480867/2f74bcf1-2133-4f42-a7bb-d772152d6a1f)
