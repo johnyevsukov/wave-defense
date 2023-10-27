@@ -6,6 +6,12 @@
 
 import { checkRectangularCollision, playSfx } from "./utils.js";
 
+/* cheat to increase player rapid fire rate. decrease fireRate param for faster firing. */
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const paramfireRate = parseInt(urlParams.get("fireRate"));
+const rapidFireRate = paramfireRate ? paramfireRate : 10;
+
 class Shot {
   constructor(game, player, dx, dy) {
     this.game = game;
@@ -89,7 +95,7 @@ export class Player {
     this.sfx = new Audio();
     this.sfx.src = "sfx/player-shot.wav";
     this.image = document.getElementById("playerSprite");
-    this.rapidFireRate = 10;
+    this.rapidFireRate = rapidFireRate;
     this.rapidFireTimer = this.rapidFireRate - 1;
     window.addEventListener("click", (e) => {
       this.clickShoot(e);
